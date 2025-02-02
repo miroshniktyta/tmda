@@ -1,0 +1,42 @@
+{
+  "originHash" : "e8d6593beb38081445b0b024e68c6b3e9fa26e2bb9d6603ceb05c6ec5e4af150",
+  "pins" : [
+    {
+      "identity" : "kingfisher",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/onevcat/Kingfisher",
+      "state" : {
+        "revision" : "fa3609d1975791c0a6e6f75a56dc20a957967769",
+        "version" : "8.1.4"
+      }
+    },
+    {
+      "identity" : "lightbox",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/hyperoslo/Lightbox",
+      "state" : {
+        "revision" : "398ee143f00bfc070023c155e6d088ffb399c8cb",
+        "version" : "2.5.1"
+      }
+    },
+    {
+      "identity" : "skphotobrowser",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/suzuki-0000/SKPhotoBrowser",
+      "state" : {
+        "revision" : "f9d8589310ad935270c2b24b3f97c5a89970aff5",
+        "version" : "7.1.0"
+      }
+    },
+    {
+      "identity" : "snapkit",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/SnapKit/SnapKit.git",
+      "state" : {
+        "revision" : "2842e6e84e82eb9a8dac0100ca90d9444b0307f4",
+        "version" : "5.7.1"
+      }
+    }
+  ],
+  "version" : 3
+}
