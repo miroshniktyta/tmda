@@ -3,10 +3,9 @@ import Foundation
 enum NetworkError: LocalizedError {
     case invalidURL
     case invalidResponse
+    case networkError(Error)    // For URLSession errors
     case decodingError(Error)
     case serverError(statusCode: Int, data: Data?)
-    case noInternetConnection
-    case timeout
     
     var errorDescription: String? {
         switch self {
@@ -14,14 +13,12 @@ enum NetworkError: LocalizedError {
             return "Invalid URL configuration"
         case .invalidResponse:
             return "The server returned an invalid response"
+        case .networkError(let error):
+            return "Network error: \(error.localizedDescription)"
         case .decodingError(let error):
             return "Failed to decode response: \(error.localizedDescription)"
         case .serverError(let code, _):
             return "Server error occurred (Status: \(code))"
-        case .noInternetConnection:
-            return "No internet connection available"
-        case .timeout:
-            return "Request timed out"
         }
     }
     

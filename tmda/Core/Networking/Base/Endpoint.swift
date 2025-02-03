@@ -12,15 +12,17 @@ protocol Endpoint {
 }
 
 extension Endpoint {
-    var headers: [String: String]? { nil }
-    var queryItems: [URLQueryItem]? { nil }
+    var baseURL: String { APIConfig.baseURL }
+    var method: HTTPMethod { .get }
+    var headers: [String: String]? { APIConfig.defaultHeaders }
     var body: Data? { nil }
+    var queryItems: [URLQueryItem]? { nil }
 }
 
 extension Endpoint {
     var url: URL? {
         var components = URLComponents(string: baseURL)
-        components?.path = path
+        components?.path = APIConfig.apiVersion + path
         components?.queryItems = queryItems
         return components?.url
     }
