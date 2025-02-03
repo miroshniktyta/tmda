@@ -14,10 +14,13 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         guard let windowScene = (scene as? UIWindowScene) else { return }
         
         let window = UIWindow(windowScene: windowScene)
-        let vc = UIViewController()
-        vc.view.backgroundColor = .blue
-        let nc = UINavigationController(rootViewController: vc)
-        window.rootViewController = nc
+        let httpClient = HTTPClient()
+        let movieService = MovieService(client: httpClient)
+        let viewModel = MoviesListViewModel(movieService: movieService)
+        let viewController = MoviesListViewController(viewModel: viewModel)
+        let navigationController = UINavigationController(rootViewController: viewController)
+        window.overrideUserInterfaceStyle = .dark
+        window.rootViewController = navigationController
         self.window = window
         window.makeKeyAndVisible()
     }
