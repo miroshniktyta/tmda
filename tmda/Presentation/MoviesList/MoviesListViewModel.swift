@@ -12,7 +12,7 @@ final class MoviesListViewModel {
     @Published private(set) var movies: [Movie] = []
     @Published private(set) var state: State = .loading
     
-    private let movieService: MovieServiceProtocol
+    let movieService: MovieServiceProtocol
     private var currentPage = 1
     private var totalPages = 1
     private var genres: [MovieGenre] = []

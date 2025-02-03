@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct MovieDetailEndpoint: Endpoint {
+struct MovieDetailsEndpoint: Endpoint {
     
     let movieId: Int
     

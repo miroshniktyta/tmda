@@ -129,4 +129,11 @@ extension MoviesListViewController: UITableViewDataSource, UITableViewDelegate {
             viewModel.loadMoreMoviesIfNeeded()
         }
     }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let movie = viewModel.movies[indexPath.row]
+        let detailsViewModel = MovieDetailsViewModel(movieService: viewModel.movieService, movieId: movie.id) // TODO: consider separate service
+        let detailsVC = MovieDetailsViewController(viewModel: detailsViewModel)
+        navigationController?.pushViewController(detailsVC, animated: true)
+    }
 } 
