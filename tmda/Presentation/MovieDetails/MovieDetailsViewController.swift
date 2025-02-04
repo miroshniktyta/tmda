@@ -1,5 +1,6 @@
 import UIKit
 import Combine
+import SKPhotoBrowser
 
 final class MovieDetailsViewController: UIViewController {
     private let viewModel: MovieDetailsViewModel
@@ -108,6 +109,7 @@ final class MovieDetailsViewController: UIViewController {
         super.viewDidLoad()
         setupUI()
         setupBindings()
+        setupImageViewer()
         viewModel.loadMovieDetails()
         playButton.addTarget(self, action: #selector(handlePlayButton), for: .touchUpInside)
     }
@@ -243,6 +245,25 @@ final class MovieDetailsViewController: UIViewController {
         
         if let posterURL = movie.posterURL {
             posterImageView.kf.setImage(with: posterURL)
+        }
+    }
+    
+    private func setupImageViewer() {
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handlePosterTap))
+        posterImageView.isUserInteractionEnabled = true
+        posterImageView.addGestureRecognizer(tapGesture)
+    }
+    
+    @objc private func handlePosterTap() {
+        guard let image = posterImageView.image else { return }
+        
+        if case .loaded(let movie) = viewModel.state {
+            let photo = SKPhoto.photoWithImage(image)
+            photo.caption = movie.title
+            
+            let browser = SKPhotoBrowser(photos: [photo])
+            browser.initializePageIndex(0)
+            present(browser, animated: false)
         }
     }
     

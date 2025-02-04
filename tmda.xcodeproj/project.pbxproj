@@ -41,6 +41,8 @@
 		4FD484282D5295D20004317C /* Video.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FD484272D5295D20004317C /* Video.swift */; };
 		4FD4842A2D5295E90004317C /* MovieVideosEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FD484292D5295E90004317C /* MovieVideosEndpoint.swift */; };
 		4FD4842C2D52A70A0004317C /* VideoResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FD4842B2D52A70A0004317C /* VideoResponse.swift */; };
+		4FD4842F2D52B3C90004317C /* Lightbox in Frameworks */ = {isa = PBXBuildFile; productRef = 4FD4842E2D52B3C90004317C /* Lightbox */; };
+		4FD484352D52B7580004317C /* SKPhotoBrowser in Frameworks */ = {isa = PBXBuildFile; productRef = 4FD484342D52B7580004317C /* SKPhotoBrowser */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -85,7 +87,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				4FD483E42D4F95A90004317C /* Kingfisher in Frameworks */,
+				4FD4842F2D52B3C90004317C /* Lightbox in Frameworks */,
 				4FD483DF2D4E9DE60004317C /* SnapKit in Frameworks */,
+				4FD484352D52B7580004317C /* SKPhotoBrowser in Frameworks */,
 				4FD483E12D4E9DE60004317C /* SnapKit-Dynamic in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -264,6 +268,8 @@
 				4FD483DE2D4E9DE60004317C /* SnapKit */,
 				4FD483E02D4E9DE60004317C /* SnapKit-Dynamic */,
 				4FD483E32D4F95A90004317C /* Kingfisher */,
+				4FD4842E2D52B3C90004317C /* Lightbox */,
+				4FD484342D52B7580004317C /* SKPhotoBrowser */,
 			);
 			productName = tmda;
 			productReference = 4FD483BC2D4E80710004317C /* tmda.app */;
@@ -296,6 +302,8 @@
 			packageReferences = (
 				4FD483DD2D4E9DE60004317C /* XCRemoteSwiftPackageReference "SnapKit" */,
 				4FD483E22D4F95A90004317C /* XCRemoteSwiftPackageReference "Kingfisher" */,
+				4FD4842D2D52B3C90004317C /* XCRemoteSwiftPackageReference "Lightbox" */,
+				4FD484332D52B7580004317C /* XCRemoteSwiftPackageReference "SKPhotoBrowser" */,
 			);
 			productRefGroup = 4FD483BD2D4E80710004317C /* Products */;
 			projectDirPath = "";
@@ -596,6 +604,22 @@
 				minimumVersion = 8.1.4;
 			};
 		};
+		4FD4842D2D52B3C90004317C /* XCRemoteSwiftPackageReference "Lightbox" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/hyperoslo/Lightbox";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.5.1;
+			};
+		};
+		4FD484332D52B7580004317C /* XCRemoteSwiftPackageReference "SKPhotoBrowser" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/suzuki-0000/SKPhotoBrowser";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 7.1.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -613,6 +637,16 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 4FD483E22D4F95A90004317C /* XCRemoteSwiftPackageReference "Kingfisher" */;
 			productName = Kingfisher;
+		};
+		4FD4842E2D52B3C90004317C /* Lightbox */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 4FD4842D2D52B3C90004317C /* XCRemoteSwiftPackageReference "Lightbox" */;
+			productName = Lightbox;
+		};
+		4FD484342D52B7580004317C /* SKPhotoBrowser */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 4FD484332D52B7580004317C /* XCRemoteSwiftPackageReference "SKPhotoBrowser" */;
+			productName = SKPhotoBrowser;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
