@@ -32,6 +32,15 @@ final class MoviesListViewController: UIViewController {
         return table
     }()
     
+    private lazy var sortButton: UIBarButtonItem = {
+        UIBarButtonItem(
+            image: UIImage(systemName: "arrow.up.arrow.down"),
+            style: .plain,
+            target: self,
+            action: #selector(showSortOptions)
+        )
+    }()
+    
     init(viewModel: MoviesListViewModel) {
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
@@ -55,6 +64,8 @@ final class MoviesListViewController: UIViewController {
         tableView.snp.makeConstraints { make in
             make.edges.equalToSuperview()
         }
+        
+        navigationItem.rightBarButtonItem = sortButton
     }
     
     private func setupBindings() {
@@ -101,7 +112,27 @@ final class MoviesListViewController: UIViewController {
     }
     
     @objc private func handlePullToRefresh() {
-        viewModel.loadInitialMovies()
+        viewModel.fetchInitialData() // TODO: make it s we dont refetch genres by this?
+    }
+    
+    @objc private func showSortOptions() {
+        let alert = UIAlertController(title: "Sort By", message: nil, preferredStyle: .actionSheet)
+        
+        MovieSortOption.allCases.forEach { option in
+            let action = UIAlertAction(title: option.title, style: .default) { [weak self] _ in
+                self?.viewModel.setSortOption(option)
+            }
+            
+            if option == viewModel.currentSortOption {
+                action.setValue(true, forKey: "checked")
+            }
+            
+            alert.addAction(action)
+        }
+        
+        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel))
+        
+        present(alert, animated: true)
     }
 }
 

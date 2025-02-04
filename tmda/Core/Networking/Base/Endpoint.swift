@@ -6,17 +6,17 @@ protocol Endpoint {
     var baseURL: String { get }
     var path: String { get }
     var method: HTTPMethod { get }
-    var headers: [String: String]? { get }
-    var queryItems: [URLQueryItem]? { get }
+    var headers: [String: String] { get }
+    var queryItems: [URLQueryItem] { get }
     var body: Data? { get }
 }
 
 extension Endpoint {
     var baseURL: String { APIConfig.baseURL }
     var method: HTTPMethod { .get }
-    var headers: [String: String]? { APIConfig.defaultHeaders }
+    var headers: [String: String] { APIConfig.defaultHeaders }
     var body: Data? { nil }
-    var queryItems: [URLQueryItem]? { nil }
+    var queryItems: [URLQueryItem] { [] }
 }
 
 extension Endpoint {

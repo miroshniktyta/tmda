@@ -33,6 +33,8 @@
 		4FD484122D50C2420004317C /* GenresEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FD484112D50C2420004317C /* GenresEndpoint.swift */; };
 		4FD4841B2D510E560004317C /* MovieDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FD484182D510E560004317C /* MovieDetailsViewController.swift */; };
 		4FD4841C2D510E560004317C /* MovieDetailsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FD484192D510E560004317C /* MovieDetailsViewModel.swift */; };
+		4FD4841E2D512D5F0004317C /* MovieSortOption.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FD4841D2D512D5F0004317C /* MovieSortOption.swift */; };
+		4FD484202D512D720004317C /* DiscoverMoviesEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FD4841F2D512D720004317C /* DiscoverMoviesEndpoint.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -61,6 +63,8 @@
 		4FD484112D50C2420004317C /* GenresEndpoint.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GenresEndpoint.swift; sourceTree = "<group>"; };
 		4FD484182D510E560004317C /* MovieDetailsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MovieDetailsViewController.swift; sourceTree = "<group>"; };
 		4FD484192D510E560004317C /* MovieDetailsViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MovieDetailsViewModel.swift; sourceTree = "<group>"; };
+		4FD4841D2D512D5F0004317C /* MovieSortOption.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieSortOption.swift; sourceTree = "<group>"; };
+		4FD4841F2D512D720004317C /* DiscoverMoviesEndpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscoverMoviesEndpoint.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -150,6 +154,7 @@
 				4FD483FD2D50307B0004317C /* MovieGenre.swift */,
 				4FD483FB2D5030410004317C /* MovieDetail.swift */,
 				4FD483F62D4FBC220004317C /* Movie.swift */,
+				4FD4841D2D512D5F0004317C /* MovieSortOption.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -189,6 +194,7 @@
 				4FD483FF2D5030C40004317C /* MovieDetailsEndpoint.swift */,
 				4FD484112D50C2420004317C /* GenresEndpoint.swift */,
 				4FD483F22D4FBBCC0004317C /* MovieEndpoint.swift */,
+				4FD4841F2D512D720004317C /* DiscoverMoviesEndpoint.swift */,
 			);
 			name = Endpoints;
 			sourceTree = "<group>";
@@ -310,6 +316,7 @@
 				4FD483F72D4FBC220004317C /* Movie.swift in Sources */,
 				4FD484122D50C2420004317C /* GenresEndpoint.swift in Sources */,
 				4FD483EA2D4F96430004317C /* HTTPClient.swift in Sources */,
+				4FD484202D512D720004317C /* DiscoverMoviesEndpoint.swift in Sources */,
 				4FD4840C2D50C1280004317C /* MoviesListViewController.swift in Sources */,
 				4FD483F52D4FBC010004317C /* APIConfig.swift in Sources */,
 				4FD4840B2D50C1270004317C /* MovieCell.swift in Sources */,
@@ -318,6 +325,7 @@
 				4FD483EB2D4F96430004317C /* NetworkError.swift in Sources */,
 				4FD483F32D4FBBCC0004317C /* MovieEndpoint.swift in Sources */,
 				4FD483FE2D50307B0004317C /* MovieGenre.swift in Sources */,
+				4FD4841E2D512D5F0004317C /* MovieSortOption.swift in Sources */,
 				4FD484002D5030C40004317C /* MovieDetailsEndpoint.swift in Sources */,
 				4FD483F92D4FBC340004317C /* MovieResponse.swift in Sources */,
 			);
@@ -477,7 +485,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = pc.tmda;
+				PRODUCT_BUNDLE_IDENTIFIER = asd.asdasd.asd;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
@@ -511,7 +519,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = pc.tmda;
+				PRODUCT_BUNDLE_IDENTIFIER = asd.asdasd.asd;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
