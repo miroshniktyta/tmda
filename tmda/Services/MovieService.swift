@@ -7,6 +7,7 @@ protocol MovieServiceProtocol {
     func getMovieDetails(id: Int) -> AnyPublisher<MovieDetail, NetworkError>
     func discoverMovies(page: Int, sortBy: MovieSortOption) -> AnyPublisher<MovieResponse, NetworkError>
     func searchMovies(query: String, page: Int) -> AnyPublisher<MovieResponse, NetworkError>
+    func getMovieVideos(id: Int) -> AnyPublisher<VideoResponse, NetworkError>
 }
 
 final class MovieService: MovieServiceProtocol {
@@ -81,6 +82,21 @@ final class MovieService: MovieServiceProtocol {
         Future { promise in
             Task {
                 let result = await self.client.sendRequest(endpoint: SearchMoviesEndpoint(query: query, page: page))
+                switch result {
+                case .success(let response):
+                    promise(.success(response))
+                case .failure(let error):
+                    promise(.failure(error))
+                }
+            }
+        }
+        .eraseToAnyPublisher()
+    }
+    
+    func getMovieVideos(id: Int) -> AnyPublisher<VideoResponse, NetworkError> {
+        Future { promise in
+            Task {
+                let result = await self.client.sendRequest(endpoint: MovieVideosEndpoint(movieId: id))
                 switch result {
                 case .success(let response):
                     promise(.success(response))

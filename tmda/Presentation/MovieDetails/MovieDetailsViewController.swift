@@ -42,11 +42,19 @@ final class MovieDetailsViewController: UIViewController {
         return label
     }()
     
-    private let ratingView: UIStackView = {
+    private let ratingStackView: UIStackView = {
         let stack = UIStackView()
         stack.axis = .horizontal
-        stack.spacing = 4
         stack.alignment = .center
+        stack.spacing = 8
+        return stack
+    }()
+    
+    private let ratingContainer: UIStackView = {
+        let stack = UIStackView()
+        stack.axis = .horizontal
+        stack.alignment = .center
+        stack.spacing = 4
         return stack
     }()
     
@@ -69,6 +77,24 @@ final class MovieDetailsViewController: UIViewController {
         return indicator
     }()
     
+    private let playButton: UIButton = {
+        var configuration = UIButton.Configuration.tinted()
+        configuration.image = UIImage(systemName: "play.circle")
+        configuration.imagePadding = 8
+        configuration.title = "Watch Trailer"
+        
+        let button = UIButton(configuration: configuration)
+        button.isHidden = true
+        return button
+    }()
+
+    private let starImageView: UIImageView = {
+        let imageView = UIImageView(image: UIImage(systemName: "star.fill"))
+        imageView.tintColor = .systemYellow
+        imageView.contentMode = .scaleAspectFit
+        return imageView
+    }()
+    
     init(viewModel: MovieDetailsViewModel) {
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
@@ -83,6 +109,7 @@ final class MovieDetailsViewController: UIViewController {
         setupUI()
         setupBindings()
         viewModel.loadMovieDetails()
+        playButton.addTarget(self, action: #selector(handlePlayButton), for: .touchUpInside)
     }
     
     private func setupUI() {
@@ -96,17 +123,19 @@ final class MovieDetailsViewController: UIViewController {
         contentView.addSubview(titleLabel)
         contentView.addSubview(yearCountryLabel)
         contentView.addSubview(genresLabel)
-        contentView.addSubview(ratingView)
+        contentView.addSubview(ratingStackView)
         contentView.addSubview(overviewLabel)
         
-        ratingView.addArrangedSubview(UIImageView(image: UIImage(systemName: "star.fill")))
-        ratingView.addArrangedSubview(ratingLabel)
+        ratingContainer.addArrangedSubview(starImageView)
+        ratingContainer.addArrangedSubview(ratingLabel)
         
+        ratingStackView.addArrangedSubview(playButton)
+        ratingStackView.addArrangedSubview(UIView())
+        ratingStackView.addArrangedSubview(ratingContainer)
+        
+        contentView.addSubview(ratingStackView)
+                
         setupConstraints()
-        
-        loadingIndicator.snp.makeConstraints { make in
-            make.center.equalToSuperview()
-        }
     }
     
     private func setupConstraints() {
@@ -140,15 +169,19 @@ final class MovieDetailsViewController: UIViewController {
             make.leading.trailing.equalToSuperview().inset(16)
         }
         
-        ratingView.snp.makeConstraints { make in
+        ratingStackView.snp.makeConstraints { make in
             make.top.equalTo(genresLabel.snp.bottom).offset(16)
-            make.leading.equalToSuperview().inset(16)
+            make.leading.trailing.equalToSuperview().inset(16)
         }
         
         overviewLabel.snp.makeConstraints { make in
-            make.top.equalTo(ratingView.snp.bottom).offset(16)
+            make.top.equalTo(ratingStackView.snp.bottom).offset(16)
             make.leading.trailing.equalToSuperview().inset(16)
             make.bottom.equalToSuperview().inset(16)
+        }
+        
+        loadingIndicator.snp.makeConstraints { make in
+            make.center.equalToSuperview()
         }
     }
     
@@ -157,6 +190,13 @@ final class MovieDetailsViewController: UIViewController {
             .receive(on: DispatchQueue.main)
             .sink { [weak self] state in
                 self?.handleState(state)
+            }
+            .store(in: &cancellables)
+        
+        viewModel.$trailer
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] trailer in
+                self?.playButton.isHidden = trailer == nil
             }
             .store(in: &cancellables)
     }
@@ -203,6 +243,20 @@ final class MovieDetailsViewController: UIViewController {
         
         if let posterURL = movie.posterURL {
             posterImageView.kf.setImage(with: posterURL)
+        }
+    }
+    
+    @objc private func handlePlayButton() {
+        guard let trailer = viewModel.trailer else { return }
+        
+        // Try to open YouTube app first
+        if let appURL = trailer.youtubeAppURL,
+           UIApplication.shared.canOpenURL(appURL) {
+            UIApplication.shared.open(appURL)
+        }
+        // Fallback to web URL
+        else if let webURL = trailer.youtubeWebURL {
+            UIApplication.shared.open(webURL)
         }
     }
 } 

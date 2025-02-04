@@ -9,6 +9,7 @@ final class MovieDetailsViewModel {
     }
     
     @Published private(set) var state: State = .loading
+    @Published private(set) var trailer: Video?
     
     private let movieService: MovieServiceProtocol
     private let movieId: Int
@@ -22,18 +23,22 @@ final class MovieDetailsViewModel {
     func loadMovieDetails() {
         state = .loading
         
-        movieService.getMovieDetails(id: movieId)
-            .receive(on: DispatchQueue.main)
-            .sink(
-                receiveCompletion: { [weak self] completion in
-                    if case .failure(let error) = completion {
-                        self?.state = .error(error)
-                    }
-                },
-                receiveValue: { [weak self] details in
-                    self?.state = .loaded(details)
+        Publishers.Zip(
+            movieService.getMovieDetails(id: movieId),
+            movieService.getMovieVideos(id: movieId)
+        )
+        .receive(on: DispatchQueue.main)
+        .sink(
+            receiveCompletion: { [weak self] completion in
+                if case .failure(let error) = completion {
+                    self?.state = .error(error)
                 }
-            )
-            .store(in: &cancellables)
+            },
+            receiveValue: { [weak self] movieDetail, videos in
+                self?.state = .loaded(movieDetail)
+                self?.trailer = videos.results.first { $0.isYouTubeTrailer }
+            }
+        )
+        .store(in: &cancellables)
     }
 } 
