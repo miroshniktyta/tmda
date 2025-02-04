@@ -12,15 +12,20 @@ final class MoviesListViewModel {
     @Published private(set) var movies: [Movie] = []
     @Published private(set) var state: State = .loading
     @Published private(set) var currentSortOption: MovieSortOption = .popularityDesc
-    
+    @Published private(set) var searchResults: [Movie] = []
+    @Published var searchQuery: String = ""
+
     let movieService: MovieServiceProtocol
     private var currentPage = 1
     private var totalPages = 1
     private var genres: [MovieGenre] = []
     private var cancellables = Set<AnyCancellable>()
     
+    var onMovieSelected: ((Int) -> Void)?  // movieId as parameter
+    
     init(movieService: MovieServiceProtocol) {
         self.movieService = movieService
+        setupSearchBinding()
         fetchInitialData()
     }
     
@@ -30,7 +35,7 @@ final class MoviesListViewModel {
         resetAndRefetch()
     }
     
-    func fetchInitialData() {
+    private func fetchInitialData() {
         state = .loading
         currentPage = 1
         movies = []
@@ -51,7 +56,7 @@ final class MoviesListViewModel {
             .store(in: &cancellables)
     }
     
-    private func resetAndRefetch() {
+    func resetAndRefetch() {
         currentPage = 1
         movies = []
         fetchMovies()
@@ -59,11 +64,11 @@ final class MoviesListViewModel {
     
     func loadMoreMoviesIfNeeded() {
         guard case .loaded = state, currentPage < totalPages else { return }
-        state = .loading
         fetchMovies()
     }
     
     private func fetchMovies() {
+        state = .loading
         movieService.discoverMovies(page: currentPage, sortBy: currentSortOption)
             .receive(on: DispatchQueue.main)
             .sink(
@@ -88,4 +93,35 @@ final class MoviesListViewModel {
             genres.first { $0.id == id }?.name
         }
     }
-} 
+
+    private func setupSearchBinding() {
+        $searchQuery
+            .debounce(for: .milliseconds(500), scheduler: DispatchQueue.main)
+            .removeDuplicates()
+            .map { query -> AnyPublisher<MovieResponse, NetworkError> in
+                guard !query.isEmpty else {
+                    return Empty()
+                        .setFailureType(to: NetworkError.self)
+                        .eraseToAnyPublisher()
+                }
+                return self.movieService.searchMovies(query: query, page: 1)
+            }
+            .switchToLatest()
+            .receive(on: DispatchQueue.main)
+            .sink(
+                receiveCompletion: { [weak self] completion in
+                    if case .failure(let error) = completion {
+                        self?.state = .error(error)
+                    }
+                },
+                receiveValue: { [weak self] response in
+                    self?.searchResults = response.results
+                }
+            )
+            .store(in: &cancellables)
+    }
+    
+    func showMovieDetails(for movie: Movie) {
+        onMovieSelected?(movie.id)
+    }
+}

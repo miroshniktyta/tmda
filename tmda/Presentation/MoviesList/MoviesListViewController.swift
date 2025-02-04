@@ -41,9 +41,15 @@ final class MoviesListViewController: UIViewController {
         )
     }()
     
+    private let searchController: UISearchController
+    
     init(viewModel: MoviesListViewModel) {
+        let searchResultsController = MoviesSearchResultsController(viewModel: viewModel)
+        self.searchController = UISearchController(searchResultsController: searchResultsController)
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
+        
+        setupNavigationHandler()
     }
     
     required init?(coder: NSCoder) {
@@ -53,6 +59,7 @@ final class MoviesListViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
+        setupSearchController()
         setupBindings()
     }
     
@@ -66,6 +73,15 @@ final class MoviesListViewController: UIViewController {
         }
         
         navigationItem.rightBarButtonItem = sortButton
+    }
+    
+    private func setupSearchController() {
+        searchController.searchResultsUpdater = self
+        searchController.obscuresBackgroundDuringPresentation = false
+        searchController.searchBar.placeholder = "Search movies..."
+        navigationItem.searchController = searchController
+        navigationItem.hidesSearchBarWhenScrolling = false
+        definesPresentationContext = true
     }
     
     private func setupBindings() {
@@ -112,7 +128,7 @@ final class MoviesListViewController: UIViewController {
     }
     
     @objc private func handlePullToRefresh() {
-        viewModel.fetchInitialData() // TODO: make it s we dont refetch genres by this?
+        viewModel.resetAndRefetch()
     }
     
     @objc private func showSortOptions() {
@@ -133,6 +149,17 @@ final class MoviesListViewController: UIViewController {
         alert.addAction(UIAlertAction(title: "Cancel", style: .cancel))
         
         present(alert, animated: true)
+    }
+    
+    private func setupNavigationHandler() {
+        viewModel.onMovieSelected = { [weak self] movieId in
+            guard let self = self else { return }
+            
+            let detailsViewModel = MovieDetailsViewModel(movieService: viewModel.movieService, movieId: movieId)
+            let detailsVC = MovieDetailsViewController(viewModel: detailsViewModel)
+            self.navigationController?.pushViewController(detailsVC, animated: true)
+//            self.searchController.dismiss(animated: true)
+        }
     }
 }
 
@@ -166,5 +193,13 @@ extension MoviesListViewController: UITableViewDataSource, UITableViewDelegate {
         let detailsViewModel = MovieDetailsViewModel(movieService: viewModel.movieService, movieId: movie.id) // TODO: consider separate service
         let detailsVC = MovieDetailsViewController(viewModel: detailsViewModel)
         navigationController?.pushViewController(detailsVC, animated: true)
+    }
+}
+
+// MARK: - UISearchResultsUpdating
+extension MoviesListViewController: UISearchResultsUpdating {
+    func updateSearchResults(for searchController: UISearchController) {
+        guard let query = searchController.searchBar.text else { return }
+        viewModel.searchQuery = query
     }
 } 
