@@ -150,10 +150,9 @@ final class MovieDetailsViewController: UIViewController {
             make.width.equalToSuperview()
         }
         
-        let posterRatio: CGFloat = 1.4
         posterImageView.snp.makeConstraints { make in
             make.top.leading.trailing.equalToSuperview()
-            make.height.equalTo(posterImageView.snp.width).multipliedBy(posterRatio)
+            make.height.equalTo(posterImageView.snp.width).multipliedBy(1/MovieImageType.poster.aspectRatio)
         }
         
         titleLabel.snp.makeConstraints { make in
@@ -243,8 +242,11 @@ final class MovieDetailsViewController: UIViewController {
         ratingLabel.text = String(format: "%.1f", movie.voteAverage)
         overviewLabel.text = movie.overview
         
-        if let posterURL = movie.posterURL {
+        if let posterURL = movie.posterURL(size: .large) {
+            posterImageView.isHidden = false
             posterImageView.kf.setImage(with: posterURL)
+        } else {
+            posterImageView.isHidden = true
         }
     }
     
@@ -255,10 +257,8 @@ final class MovieDetailsViewController: UIViewController {
     }
     
     @objc private func handlePosterTap() {
-        guard let image = posterImageView.image else { return }
-        
         if case .loaded(let movie) = viewModel.state {
-            let photo = SKPhoto.photoWithImage(image)
+            let photo = SKPhoto.photoWithImageURL(movie.posterURL(size: .original)?.absoluteString ?? "")
             photo.caption = movie.title
             
             let browser = SKPhotoBrowser(photos: [photo])

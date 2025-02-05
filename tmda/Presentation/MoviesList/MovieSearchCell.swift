@@ -10,11 +10,12 @@ import UIKit
 final class MovieSearchCell: UITableViewCell {
     static let reuseIdentifier = "MovieSearchCell"
     
-    private let posterImageView: UIImageView = {
+    private let backdropImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFill
         imageView.clipsToBounds = true
         imageView.layer.cornerRadius = 4
+        imageView.backgroundColor = .secondarySystemBackground
         return imageView
     }()
     
@@ -56,23 +57,23 @@ final class MovieSearchCell: UITableViewCell {
     private func setupUI() {
         selectionStyle = .none
         
-        contentView.addSubview(posterImageView)
+        contentView.addSubview(backdropImageView)
         contentView.addSubview(titleLabel)
         contentView.addSubview(yearLabel)
         contentView.addSubview(genresLabel)
         contentView.addSubview(ratingLabel)
         
-        posterImageView.snp.makeConstraints { make in
+        backdropImageView.snp.makeConstraints { make in
             make.leading.equalToSuperview().offset(16)
             make.centerY.equalToSuperview()
-            make.width.equalTo(60)
             make.height.equalTo(90)
+            make.width.equalTo(backdropImageView.snp.height).multipliedBy(1/MovieImageType.poster.aspectRatio)
             make.top.bottom.equalToSuperview().inset(8)
         }
         
         titleLabel.snp.makeConstraints { make in
-            make.top.equalTo(posterImageView)
-            make.leading.equalTo(posterImageView.snp.trailing).offset(12)
+            make.top.equalTo(backdropImageView)
+            make.leading.equalTo(backdropImageView.snp.trailing).offset(12)
             make.trailing.equalToSuperview().inset(16)
         }
         
@@ -88,7 +89,7 @@ final class MovieSearchCell: UITableViewCell {
         }
         
         ratingLabel.snp.makeConstraints { make in
-            make.bottom.equalTo(posterImageView)
+            make.bottom.equalTo(backdropImageView)
             make.leading.equalTo(titleLabel)
         }
     }
@@ -99,14 +100,14 @@ final class MovieSearchCell: UITableViewCell {
         genresLabel.text = genres.joined(separator: " • ")
         ratingLabel.text = "★ \(String(format: "%.1f", movie.voteAverage))"
         
-        if let posterURL = movie.posterURL {
-            posterImageView.kf.setImage(with: posterURL)
+        if let posterURL = movie.backdropURL(size: .thumbnail) {
+            backdropImageView.kf.setImage(with: posterURL)
         }
     }
     
     override func prepareForReuse() {
         super.prepareForReuse()
-        posterImageView.kf.cancelDownloadTask()
-        posterImageView.image = nil
+        backdropImageView.kf.cancelDownloadTask()
+        backdropImageView.image = nil
     }
 }

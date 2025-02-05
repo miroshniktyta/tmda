@@ -76,6 +76,7 @@ final class MovieCell: UITableViewCell {
         let view = UIView()
         view.clipsToBounds = true
         view.layer.cornerRadius = 8
+        view.backgroundColor = .secondarySystemBackground
         return view
     }()
     
@@ -115,6 +116,7 @@ final class MovieCell: UITableViewCell {
         
         posterImageView.snp.makeConstraints { make in
             make.edges.equalToSuperview()
+            make.height.equalTo(posterImageView.snp.width).multipliedBy(1/MovieImageType.backdrop.aspectRatio)
         }
         
         titleContainer.snp.makeConstraints { make in
@@ -139,15 +141,8 @@ final class MovieCell: UITableViewCell {
         genresLabel.text = genres.joined(separator: " • ")
         ratingLabel.text = "★ \(String(format: "%.1f", movie.voteAverage))"
         
-        if let posterURL = movie.posterURL {
-            posterImageView.kf.setImage(
-                with: posterURL,
-                options: [
-                    .transition(.fade(0.3)),
-                    .processor(DownsamplingImageProcessor(size: bounds.size)),
-                    .cacheOriginalImage
-                ]
-            )
+        if let backdropURL = movie.backdropURL(size: .medium) {
+            posterImageView.kf.setImage(with: backdropURL)
         }
     }
     

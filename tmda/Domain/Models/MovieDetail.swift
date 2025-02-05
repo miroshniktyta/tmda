@@ -29,13 +29,11 @@ struct MovieDetail: Decodable {
     let revenue: Int
     let homepage: String?
     
-    var posterURL: URL? {
-        guard let posterPath = posterPath else { return nil }
-        return URL(string: APIConfig.imageBaseURL + APIConfig.posterSize + posterPath)
+    func posterURL(size: MovieImageSize) -> URL? {
+        MovieImageURL.url(for: posterPath, type: .poster, size: size)
     }
     
-    var backdropURL: URL? {
-        guard let backdropPath = backdropPath else { return nil }
-        return URL(string: APIConfig.imageBaseURL + APIConfig.posterSize + backdropPath)
+    func backdropURL(size: MovieImageSize) -> URL? {
+        MovieImageURL.url(for: backdropPath, type: .backdrop, size: size)
     }
 }

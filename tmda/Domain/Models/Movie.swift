@@ -10,14 +10,18 @@ import Foundation
 struct Movie: Decodable {
     let id: Int
     let title: String
-    let posterPath: String?
     let genreIds: [Int]
     let voteAverage: Double
     let releaseDate: String
+    let posterPath: String?
+    let backdropPath: String?
     
-    var posterURL: URL? {
-        guard let posterPath else { return nil }
-        return URL(string: "https://image.tmdb.org/t/p/w500\(posterPath)")
+    func posterURL(size: MovieImageSize) -> URL? {
+        MovieImageURL.url(for: posterPath, type: .poster, size: size)
+    }
+    
+    func backdropURL(size: MovieImageSize) -> URL? {
+        MovieImageURL.url(for: backdropPath, type: .backdrop, size: size)
     }
     
     var releaseYear: String {
